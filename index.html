@@ -1,0 +1,429 @@
+<DOCTYPE HTML>
+<html>
+<head>
+	<title> Email Generator</title>
+	<style>
+	#preview-view{
+		float:right;
+	}
+	
+	#editor{
+		float:left;
+	}
+	
+	.module{
+		position:relative;
+		width:250px;
+		height:50px;
+		background:#E0E0E0;
+		margin-bottom:10px;
+		border-radius:3px;
+	}
+	
+	.hierarchy{
+		display:none;
+	}
+	
+	.child-module{
+		left:50px;
+	}
+	
+	.module h2{
+		display:inline-block;
+		margin:10px 20px;
+	}
+	
+	.settings {
+		background:url("images/settings.png");
+		background-size:100%;
+		width:30px;
+		height:30px;
+		float:right;
+		margin:10px;
+	}
+	
+	.settings-popup{
+		display:none;
+		position:relative;
+		top: -100px;
+		left: 270px;
+		width:300px;
+		height:250px;
+		background:#E0E0E0;
+		border-radius:3px;
+		padding: 10px;
+		z-index:1;
+	}
+	
+	.property{
+		margin: 10px 0;
+		position: relative;
+		top: -20px;
+	}
+	
+	.hierarchy-btn{
+		position:relative;
+		top:10px;
+		left:10px;
+		width: 0; 
+		height: 0; 
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		border-top: 10px solid blue;
+	}
+	
+	.left-arrow{
+		position:relative;
+		left:-20px;
+		top:65px;
+		width: 0; 
+		height: 0; 
+		border-top: 10px solid transparent;
+		border-bottom: 10px solid transparent; 
+		border-right:10px solid #E0E0E0; 
+	}
+	
+	.add{
+		color:green;
+		margin:0 0 0 30px;
+		text-decoration:none;
+		font-size:20px;
+		font-weight:900;
+	}
+	
+	</style>
+</head>
+<body>
+<section id="header">
+	<h2>Email Generator</h2>
+</section>
+<section id="editor">
+	<section id="header-module">
+		<section class="parent module" id="header">
+			<a href="#" class="hierarchy-btn"></a>
+			<h2>Header</h2>
+			<a href="#" class="settings"></a>
+			<section class="settings-popup">
+				<div class="left-arrow"></div>
+			</section>			
+		</section>
+		<section class="hierarchy">
+			<section id="header-image1" class="image-module module child-module">
+				<h2>Image</h2>
+				<a href="#" class="settings"></a>
+				<section class="settings-popup">
+					<div class="left-arrow"></div>
+				</section>
+			</section>
+		</section>
+	</section>
+	
+	<section id="content-module">
+		<section class="parent module" id="content">
+			<a href="#" class="hierarchy-btn"></a>
+			<h2>Content</h2>
+			<a href="#" class="settings"></a>
+			<section class="settings-popup">
+				<div class="left-arrow"></div>
+			</section>
+		</section>
+		<section class="hierarchy">
+			<section id="content-paragraph1" class="paragraph-module module child-module">
+				<h2>Paragraph</h2>
+				<a href="#" class="settings"></a>
+				<section class="settings-popup">
+					<div class="left-arrow"></div>
+				</section>
+			</section>
+		</section>
+	</section>
+	
+	<section id="footer-module">
+		<section class="parent module" id="footer">
+			<a href="#" class="hierarchy-btn"></a>
+			<h2>Footer</h2>
+			<a href="#" class="settings"></a>	
+			<section class="settings-popup">
+					<div class="left-arrow"></div>
+			</section>
+		</section>
+		<section class="hierarchy">
+			<section id="footer-nav1" class="navagation-module module child-module">
+				<h2>Navigation</h2>
+				<a href="#" class="settings"></a>
+				<section class="settings-popup">
+					<div class="left-arrow"></div>
+				</section>
+			</section>
+			<section id="footer-paragraph1" class="paragraph-module module child-module">
+				<h2>Paragraph</h2>
+				<a href="#" class="settings"></a>
+				<section class="settings-popup">
+					<div class="left-arrow"></div>
+				</section>
+			</section>
+		</section>
+	</section>
+</section>
+
+<section id="preview-view">
+	<iframe id="preview"src="about:blank" width="715" height="850">
+		
+	</iframe>
+</section>
+
+<script>
+	window.onload = function(){
+		
+		//add global settings for font size and color
+		
+		var iframe = document.getElementById("preview"),
+			modules = document.getElementsByClassName("module");
+			
+		//populate iframe with default content
+		function setDefaultIFrame(){
+			var defaultContent = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'
+				+ '<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Your Message Subject or Title</title></head>'
+				+ '<body><table id="main-table" cellpadding="0" cellspacing="0" border="0" width="650"><tr id="header"><td><img src="images/default-header.jpg" id="header-image1" width="700" height="300"/></tr></tr><tr id="content"><td><table id="content-table" width="700"><tr><td><span id="content-paragraph1" style="color:#000000; margin:0; font-family: Arial, Helvetica, sans-serif;">Test Content</span></td></tr></table></td></tr><tr id="footer"><table width="700" cellpadding="0" cellspacing="0" style=" font-family: Arial, Helvetica, sans-serif;"><tr width="700"><td width="30" height="10" class="margin"></td><td width="30" height="10" class="margin"></td><td width="30" height="10" class="margin"></td></tr><tr width="700"><td width="30" height="50" class="margin"></td><td width="30" height="50" class="margin"></td><td width="30" height="50" class="margin"></td></tr><tr width="700"><td width="30" height="10" class="margin"></td><td><table width="400" cellpadding="0" cellspacing="0" align="center" id="footer-nav1"><tr><td><a href="#" style="font-size: 14px; color: #000000;  text-decoration:none; font-family: Arial, Helvetica, sans-serif; text-align:center; margin:0;" target="_blank">Prizes</a></td><td style="font-size: 14px; color: #000000;  text-decoration:none; font-family: Arial, Helvetica, sans-serif; text-align:center; margin:0;">|</td><td style="text-align:center;"><a href="#" style="font-size: 14px; color: #000000;  text-decoration:none; font-family: Arial, Helvetica, sans-serif; text-align:center; margin:0;" target="_blank">Official Rules</a></td><td style="font-size: 14px; color: #000000;  text-decoration:none; font-family: Arial, Helvetica, sans-serif; text-align:center; margin:0;">|</td><td style="text-align:center;"><a href="#" style="font-size: 14px; color: #000000;  text-decoration:none; font-family: Arial, Helvetica, sans-serif; text-align:center; margin:0;" target="_blank">Privacy Policy</a></td><td style="font-size: 14px; color: #000000;  text-decoration:none; font-family: Arial, Helvetica, sans-serif; text-align:center; margin:0;">|</td><td style="text-align:center;"><a href="#" style="font-size: 14px; color: #000000;  text-decoration:none; font-family: Arial, Helvetica, sans-serif; text-align:center; margin:0;" target="_blank">Contact Us</a></td><td style="font-size: 14px; color: #000000;  text-decoration:none; font-family: Arial, Helvetica, sans-serif; text-align:center; margin:0;">|</td><td style="text-align:center;"><a href="#" style="font-size: 14px; color: #000000;  text-decoration:none; font-family: Arial, Helvetica, sans-serif; text-align:center; margin:0;" target="_blank">Company Name</a></td></tr></table></td><td width="30" height="10"></td></tr><tr width="700"><td width="30" height="10"></td><td><span style="margin:0; font-size: 12px;font-family: Arial, Helvetica, sans-serif;" id="footer-paragraph1">[ABBRV. RULES FPO] <strong>No Purchase or Payment of Money Necessary to enter or win this sweepstakes.</strong> A purchase or payment will not increase your chances of winning. [Promotion Title] starts [date] at [time]. Click on Official Rules for details on entry instructions, odds of winning, prize details, restrictions, ect. Legal residents of 50 U.S./DC and 13 years or older as of time of entry. Void where prohibited. [company and address]</span></td><td width="30" height="10"></td></tr><tr width="700"><td width="30" height="10"></td><td width="30" height="10"></td><td width="30" height="10"></td></tr></table></tr></table></body></html>'
+			
+			iframe.contentWindow.document.open('text/htmlreplace');
+			iframe.contentWindow.document.write(defaultContent);
+			iframe.contentWindow.document.close();
+		}
+		
+		//add properties to module settings
+		(function(){
+			for(var i = 0, item; item = modules[i]; i++){
+			
+				// adds width property
+				addInputProperties("width", item);
+				
+				// adds height property
+				addInputProperties("height", item);
+				
+				// adds height property
+				addInputProperties("margin", item);
+				
+				//add property if an image
+				if(item.classList.contains("image-module")){
+					addInputProperties("image", item);
+				}else{
+					addInputProperties("background-color", item);
+				}
+				
+				//add property if a p
+				if(item.classList.contains("paragraph-module")){
+					addInputProperties("font-size", item);
+					addInputProperties("color", item);
+					addInputProperties("text-align", item);
+					addInputProperties("text", item);
+				}
+				//properties needed color, background-color, margin(not really margin but a td spacer), text-align, font-size
+			}		
+		})();
+		
+		//set up property inputs
+		function propertyInputSetup(element){
+			var properties = element.getElementsByClassName("property");
+				
+			for (var i = 0, item; item = properties[i]; i++){
+				var propertyInput = item.querySelector("input");
+				if(!propertyInput){
+					propertyInput = item.querySelector("textarea");
+				}
+				getDefaultPropertyValue(element, item, propertyInput);
+				propertyInput.onchange = function(){
+					updateIFrame(element, this);
+				};	
+			}
+		}
+		
+		//get default values of element properties
+		function getDefaultPropertyValue(element, property, propertyInput){
+			var style = property.className.substr(0,property.className.indexOf(" ")),
+					iframeElement = getIframeElement(element);
+					
+			if(style === "image"){
+				propertyInput.value = iframeElement.src.substr(iframeElement.src.indexOf("images/")+7);
+			}else if(style !== "text" && style !== "margin"){
+				propertyInput.value = window.getComputedStyle(iframeElement).getPropertyValue(style);
+			}else if(style !== "margin"){
+				propertyInput.value = iframeElement.innerHTML;
+			}
+		}
+		
+		// update iframe element
+		function updateIFrame(element, propertyInput){
+			var style = propertyInput.parentNode.className.substr(0,propertyInput.parentNode.className.indexOf(" ")),
+				iframeElement = getIframeElement(element);	
+			setStyle(style, iframeElement, propertyInput);
+		}
+		
+		// get style
+		function setStyle(style, element, propertyInput){
+			switch(style) {
+				case 'width': 
+					element.style.width = propertyInput.value;
+					break;
+				case 'height': 
+					element.style.height = propertyInput.value;
+					break;
+				case 'image': 
+					element.src = "images/" + propertyInput.value;
+					break;
+				case 'color': 
+					element.style.color = propertyInput.value;
+					break;
+				case 'font-size': 
+					element.style.fontSize = propertyInput.value;
+					break;
+				case 'background-color': 
+					element.style.backgroundColor = propertyInput.value;
+					break;
+				case 'text-align': 
+					element.style.textAlign = propertyInput.value;
+					break;
+				case 'text': 
+					element.innerHTML = propertyInput.value;
+					break;
+				case 'margin': 
+					updateMargins(element, propertyInput.value);
+					break;
+			};	
+		}
+		
+		//adds input property
+		function addInputProperties(property, element){
+			var section = document.createElement("section");
+			
+			if(property === "text"){
+				section.innerHTML = "<label>" + property +":</label><textarea cols='25' rows='2'></textarea>"
+			}else{
+				section.innerHTML = "<label>" + property +":</label><input type='text'/>"
+			}
+			
+			section.classList.add(property);
+			section.classList.add("property");
+			var popUp = element.querySelector(".settings-popup");
+			popUp.appendChild(section);
+		}
+		
+		//show/hide hierarchy
+		var hierarchyBtns = document.getElementsByClassName("hierarchy-btn");
+		
+		for(var i = 0, item; item = hierarchyBtns[i]; i++){
+			item.onclick = function(){
+			var hierarchy = this.parentNode.nextElementSibling;
+				
+				elementCommputedDisplay = window.getComputedStyle(hierarchy,null).getPropertyValue("display");
+
+				if(elementCommputedDisplay === "inline-block"){
+					hierarchy.style.display = "none";
+				} else{
+					hierarchy.style.display = "inline-block";
+				}		
+			}
+		}
+		
+		//show/hide properties
+		var settingsBtns = document.getElementsByClassName("settings");
+		
+		for(var i = 0, item; item = settingsBtns[i]; i++){
+			item.onclick = function(){
+			var settings = this.nextElementSibling,
+			module = this.parentNode,
+			elementCommputedDisplay = window.getComputedStyle(settings,null).getPropertyValue("display");
+
+				if(elementCommputedDisplay === "inline-block"){
+					settings.style.display = "none"
+				} else{
+					settings.style.display = "inline-block"
+					propertyInputSetup(module);	
+				}		
+			}
+		}
+		//update iframe margin
+		function updateMargins(element, propertyValue){
+			var marginValues = propertyValue;
+				
+				removeExistingMargins(element);
+				
+				marginValues = parseMarginValues(marginValues);
+				
+				for(var i = 0, value; value = marginValues[i]; i++){
+					addMargin(element, i, value);
+				}
+		}
+		
+		//check for margins
+		function removeExistingMargins(element){
+			var topMargin = element.parentNode.parentNode.previousSibling,
+				leftMargin = element.parentNode.previousSibling,
+				bottomMargin = element.parentNode.parentNode.nextSibling,
+				rightMargin = element.parentNode.nextSibling;
+
+			if(topMargin && topMargin.querySelector(".top-margin")){topMargin.remove();};
+			if(leftMargin){leftMargin.remove();};
+			if(bottomMargin && bottomMargin.querySelector(".bottom-margin")){bottomMargin.remove();};
+			if(rightMargin){rightMargin.remove();};
+			
+		}
+		
+		//parse margin values
+		function parseMarginValues(values){
+			var find = "px",
+				regex = new RegExp(find, 'g');
+				
+			values = values.replace(regex, "");
+			values = values.split(" ");
+			
+			return values
+		}
+		
+		//add margin(spacer td)
+		function addMargin(element, position, value){
+			var newTr,
+				newTd;
+			
+			//exit function if value is 0
+			if(parseInt(value, 10) === 0){return};
+			
+			//top margin
+			if(position === 0){
+				newTr = document.createElement("tr");
+
+				var tempTr = element.parentNode.parentNode.parentNode.insertBefore(newTr, element.parentNode.parentNode);
+				
+				newTd = document.createElement("td");
+				newTd.width = "1";
+				newTd.height = value;
+				newTd.classList.add("top-margin");
+				
+				tempTr.appendChild(newTd);
+			}
+			
+			if(position === 1){
+				newTd = document.createElement("td");
+				newTd.width = value;
+				newTd.height = "1";
+				newTd.classList.add("left-margin");
+				
+				element.parentNode.parentNode.insertBefore(newTd, element.parentNode);
+			}
+		}
+		
+		//get iframe element
+		function getIframeElement(element){
+			var iframeElement = iframe.contentWindow.document.getElementById(element.id);
+			
+			return iframeElement;
+		}
+		
+		setDefaultIFrame();
+
+	};
+	
+	
+</script>
+</body>
+</html>
